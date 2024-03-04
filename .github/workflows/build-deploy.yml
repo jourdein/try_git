@@ -11,6 +11,10 @@ on:
           - staging
           - uat
           - uat2
+      reset_pengurus:
+        description: Reset password pengurus
+        required: false
+        type: boolean
 jobs:
   deploy:
     name: Deploy to ${{ inputs.server }}
@@ -31,7 +35,7 @@ jobs:
           ENVIRONMENT: ${{ inputs.server }}
           # RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
           # CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
-          # RESET_PENGURUS: ${{ needs.check-commit.outputs.reset_pengurus }}
+          RESET_PENGURUS: ${{ input.reset_pengurus }}
         run: |
           echo
           echo "============================================================"
@@ -83,12 +87,13 @@ jobs:
       #   run: |
       #     bundle exec cap $ENVIRONMENT reset_passwords_for_users_uat user=$RESET_USER
 
-      # - name: Reset Password Pengurus
-      #   if: needs.check-commit.outputs.reset_pengurus
-      #   env:
-      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
-      #   run: |
-      #     bundle exec cap $ENVIRONMENT reset_passwords_for_admins_users_uat
+      - name: Reset Password Pengurus
+        if: ${{ inputs.reset_pengurus }}
+        env:
+          ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+        run: |
+          echo "RESET PASSWORD PENGURUS $RESET_PENGURUS"
+      # bundle exec cap $ENVIRONMENT reset_passwords_for_admins_users_uat
 
       # - name: Cleanup
       #   env:
