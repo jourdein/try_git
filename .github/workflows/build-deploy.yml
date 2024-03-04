@@ -32,8 +32,8 @@ jobs:
           core.setFailed('Publish to staging should only be run on a tag! Invalid tag ${{ github.ref }}.')
 
   deploy:
-    name: Deploy to ${{ inputs.server }}
     needs: validate-tag
+    name: Deploy to ${{ inputs.server }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.server }}
     steps:
