@@ -1,0 +1,96 @@
+name: Build & Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      servers:
+        required: true
+        type: choice
+        description: Select target server
+        options:
+          - staging
+          - uat
+          - uat2
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # - name: Setup Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 2.6.3
+      #     bundler-cache: true
+
+      # - name: All Config
+      #   env:
+      #     DEPLOY: ${{needs.check-commit.outputs.deploy}}
+      #     ENVIRONMENT: ${{ needs.check-commit.outputs.environment }}
+      #     RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
+      #     CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
+      #     RESET_PENGURUS: ${{ needs.check-commit.outputs.reset_pengurus }}
+      #   run: |
+      #     echo "============================================================"
+      #     echo "DEPLOY: $DEPLOY"
+      #     echo "ENVIRONMENT $ENVIRONMENT"
+      #     echo "RESET_USER $RESET_USER"
+      #     echo "CLONE_DB $CLONE_DB"
+      #     echo "RESET_PENGURUS $RESET_PENGURUS"
+      #     echo "============================================================"
+      #     echo
+
+      # - name: Create Secret Key
+      #   run: |
+      #     echo "$DEV_ENV_FILE" > mailboy_production_secret
+      #     sudo chmod 400 mailboy_production_secret
+      #   shell: bash
+      #   env:
+      #     DEV_ENV_FILE : ${{ secrets.MAILBOY_PRODUCTION_SECRET }}
+      # - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
+      #   with:
+      #     ssh-private-key: ${{ secrets.MAILBOY_PRODUCTION_SECRET }}
+      #     ssh-host: 54.251.233.174
+      #     ssh-port: 404
+
+      # - name: Deploy
+      #   env:
+      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+      #     BRANCH: ${{github.ref}}
+      #   run: |
+      #     bundle exec cap $ENVIRONMENT deploy:print_env branch=$BRANCH
+      #     bundle exec cap $ENVIRONMENT deploy:stop_sidekiq
+      #     bundle exec cap $ENVIRONMENT deploy:stop_unicorn
+      #     bundle exec cap $ENVIRONMENT deploy branch=$BRANCH
+
+      # - name: Clone DB
+      #   if: needs.check-commit.outputs.clone_db == 'true'
+      #   env:
+      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+      #   run: |
+      #     bundle exec cap $ENVIRONMENT replicate_production_to_uat
+
+      # - name: Reset Password User
+      #   if: needs.check-commit.outputs.reset_user != ''
+      #   env:
+      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+      #     RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
+      #   run: |
+      #     bundle exec cap $ENVIRONMENT reset_passwords_for_users_uat user=$RESET_USER
+
+      # - name: Reset Password Pengurus
+      #   if: needs.check-commit.outputs.reset_pengurus
+      #   env:
+      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+      #   run: |
+      #     bundle exec cap $ENVIRONMENT reset_passwords_for_admins_users_uat
+
+      # - name: Cleanup
+      #   env:
+      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+      #   run: |
+      #     bundle exec cap $ENVIRONMENT migrate_uat_db
+      #     bundle exec cap $ENVIRONMENT deploy:start_unicorn
+      #     bundle exec cap $ENVIRONMENT clear_uat_sidekiq
+      #     bundle exec cap $ENVIRONMENT deploy:start_sidekiq
