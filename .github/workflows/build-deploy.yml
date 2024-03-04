@@ -2,7 +2,7 @@ name: Build & Deploy
 on:
   workflow_dispatch:
     inputs:
-      servers:
+      server:
         required: true
         type: choice
         description: Select target server
@@ -12,7 +12,7 @@ on:
           - uat2
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy to ${{ inputs.server }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
