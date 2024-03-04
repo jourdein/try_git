@@ -1,5 +1,5 @@
 name: Build & Deploy
-run-name: ${{ github.actor }} publish <${{ github.ref_name }}> to ${{ inputs.server }}
+run-name: ${{ github.actor }} deploy '${{ github.ref_name }}' to ${{ inputs.server }}
 on:
   workflow_dispatch:
     inputs:
@@ -89,10 +89,11 @@ jobs:
 
       - name: Reset Password Pengurus
         if: ${{ inputs.reset_pengurus }}
-        env:
-          ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+        # env:
+        #   ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
         run: |
           echo "RESET PASSWORD PENGURUS $RESET_PENGURUS"
+          echo "ENVIRONMENT $ENVIRONMENT"
       # bundle exec cap $ENVIRONMENT reset_passwords_for_admins_users_uat
 
       # - name: Cleanup
