@@ -33,6 +33,7 @@ jobs:
 
   deploy:
     name: Deploy to ${{ inputs.server }}
+    needs: validate-tag
     runs-on: ubuntu-latest
     environment: ${{ inputs.server }}
     steps:
