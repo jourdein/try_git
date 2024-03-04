@@ -15,6 +15,10 @@ on:
         description: Reset password pengurus
         required: false
         type: boolean
+      user_mailboy_id:
+        description: Reset user with Mailboy ID
+        required: false
+        type: string
 jobs:
   deploy:
     name: Deploy to ${{ inputs.server }}
@@ -79,21 +83,21 @@ jobs:
       #   run: |
       #     bundle exec cap $ENVIRONMENT replicate_production_to_uat
 
-      # - name: Reset Password User
-      #   if: needs.check-commit.outputs.reset_user != ''
-      #   env:
-      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
-      #     RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
-      #   run: |
+      - name: Reset Password User
+        if: ${{ inputs.user_mailboy_id }} != ''
+        env:
+          ENVIRONMENT: ${{ inputs.server }}
+          RESET_USER: ${{ inputs.user_mailboy_id }}
+        run: |
+          echo "Reset PWD for User ID: $RESET_USER"
       #     bundle exec cap $ENVIRONMENT reset_passwords_for_users_uat user=$RESET_USER
 
       - name: Reset Password Pengurus
         if: ${{ inputs.reset_pengurus }}
-        # env:
-        #   ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
+        env:
+          ENVIRONMENT: ${{ inputs.server }}
         run: |
-          echo "RESET PASSWORD PENGURUS $RESET_PENGURUS"
-          echo "ENVIRONMENT $ENVIRONMENT"
+          echo "Reset PWD pengurus on $ENVIRONMENT"
       # bundle exec cap $ENVIRONMENT reset_passwords_for_admins_users_uat
 
       # - name: Cleanup
