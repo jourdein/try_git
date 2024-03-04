@@ -1,4 +1,5 @@
 name: Build & Deploy
+run-name: ${{ github.actor }} publish ${{ github.ref_name }} to ${{ inputs.server }}
 on:
   workflow_dispatch:
     inputs:
@@ -14,6 +15,7 @@ jobs:
   deploy:
     name: Deploy to ${{ inputs.server }}
     runs-on: ubuntu-latest
+    environment: ${{ inputs.server }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -24,22 +26,21 @@ jobs:
       #     ruby-version: 2.6.3
       #     bundler-cache: true
 
-      # - name: All Config
-      #   env:
-      #     DEPLOY: ${{needs.check-commit.outputs.deploy}}
-      #     ENVIRONMENT: ${{ needs.check-commit.outputs.environment }}
-      #     RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
-      #     CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
-      #     RESET_PENGURUS: ${{ needs.check-commit.outputs.reset_pengurus }}
-      #   run: |
-      #     echo "============================================================"
-      #     echo "DEPLOY: $DEPLOY"
-      #     echo "ENVIRONMENT $ENVIRONMENT"
-      #     echo "RESET_USER $RESET_USER"
-      #     echo "CLONE_DB $CLONE_DB"
-      #     echo "RESET_PENGURUS $RESET_PENGURUS"
-      #     echo "============================================================"
-      #     echo
+      - name: All Config
+        env:
+          ENVIRONMENT: ${{ inputs.server }}
+          # RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
+          # CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
+          # RESET_PENGURUS: ${{ needs.check-commit.outputs.reset_pengurus }}
+        run: |
+          echo "============================================================"
+          echo "DEPLOY: $DEPLOY"
+          echo "ENVIRONMENT $ENVIRONMENT"
+          echo "RESET_USER $RESET_USER"
+          echo "CLONE_DB $CLONE_DB"
+          echo "RESET_PENGURUS $RESET_PENGURUS"
+          echo "============================================================"
+          echo
 
       # - name: Create Secret Key
       #   run: |
