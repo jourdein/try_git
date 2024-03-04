@@ -46,8 +46,6 @@ jobs:
           echo "ENVIRONMENT: [$ENVIRONMENT]"
           echo "RESET_USER: [$RESET_USER]"
           echo "CLONE_DB: [$CLONE_DB]"
-          echo "TEST: [${{ inputs.user_mailboy_id }} !== '']
-          echo "TEST: [${{ inputs.user_mailboy_id }} !== '']
           echo "RESET_PENGURUS: [$RESET_PENGURUS]"
           echo "============================================================"
           echo
