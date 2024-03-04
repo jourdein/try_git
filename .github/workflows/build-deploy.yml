@@ -1,5 +1,5 @@
 name: Build & Deploy
-run-name: ${{ github.actor }} deploy '${{ github.ref_name }}' to ${{ inputs.server }}
+run-name: → ${{ github.actor }} deployed '${{ github.ref_name }}' to ${{ inputs.server }}
 on:
   workflow_dispatch:
     inputs:
@@ -37,13 +37,12 @@ jobs:
       - name: All Config
         env:
           ENVIRONMENT: ${{ inputs.server }}
-          # RESET_USER: ${{ needs.check-commit.outputs.reset_user }}
+          RESET_USER: ${{ inputs.user_mailboy_id }}
           # CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
           RESET_PENGURUS: ${{ inputs.reset_pengurus }}
         run: |
           echo
           echo "============================================================"
-          echo "DEPLOY: [$DEPLOY]"
           echo "ENVIRONMENT: [$ENVIRONMENT]"
           echo "RESET_USER: [$RESET_USER]"
           echo "CLONE_DB: [$CLONE_DB]"
