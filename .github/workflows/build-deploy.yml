@@ -1,5 +1,5 @@
 name: Build & Deploy
-run-name: ${{ github.actor }} publish ${{ github.ref_name }} to ${{ inputs.server }}
+run-name: @${{ github.actor }} publish <${{ github.ref_name }}> to ${{ inputs.server }}
 on:
   workflow_dispatch:
     inputs:
@@ -33,12 +33,13 @@ jobs:
           # CLONE_DB: ${{ needs.check-commit.outputs.clone_db }}
           # RESET_PENGURUS: ${{ needs.check-commit.outputs.reset_pengurus }}
         run: |
+          echo
           echo "============================================================"
-          echo "DEPLOY: $DEPLOY"
-          echo "ENVIRONMENT $ENVIRONMENT"
-          echo "RESET_USER $RESET_USER"
-          echo "CLONE_DB $CLONE_DB"
-          echo "RESET_PENGURUS $RESET_PENGURUS"
+          echo "DEPLOY: [$DEPLOY]"
+          echo "ENVIRONMENT: [$ENVIRONMENT]"
+          echo "RESET_USER: [$RESET_USER]"
+          echo "CLONE_DB: [$CLONE_DB]"
+          echo "RESET_PENGURUS: [$RESET_PENGURUS]"
           echo "============================================================"
           echo
 
@@ -55,11 +56,13 @@ jobs:
       #     ssh-host: 54.251.233.174
       #     ssh-port: 404
 
-      # - name: Deploy
-      #   env:
-      #     ENVIRONMENT: ${{needs.check-commit.outputs.environment}}
-      #     BRANCH: ${{github.ref}}
-      #   run: |
+      - name: Deploy
+        env:
+          ENVIRONMENT: ${{ inputs.server }}
+          BRANCH: ${{ github.ref }}
+        run: |
+            echo $ENVIRONMENT
+            echo $BRANCH
       #     bundle exec cap $ENVIRONMENT deploy:print_env branch=$BRANCH
       #     bundle exec cap $ENVIRONMENT deploy:stop_sidekiq
       #     bundle exec cap $ENVIRONMENT deploy:stop_unicorn
