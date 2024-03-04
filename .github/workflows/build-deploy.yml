@@ -1,5 +1,5 @@
 name: Build & Deploy
-run-name: @${{ github.actor }} publish <${{ github.ref_name }}> to ${{ inputs.server }}
+run-name: ${{ github.actor }} publish <${{ github.ref_name }}> to ${{ inputs.server }}
 on:
   workflow_dispatch:
     inputs:
