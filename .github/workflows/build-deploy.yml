@@ -46,6 +46,8 @@ jobs:
           echo "ENVIRONMENT: [$ENVIRONMENT]"
           echo "RESET_USER: [$RESET_USER]"
           echo "CLONE_DB: [$CLONE_DB]"
+          echo "TEST: [${{ inputs.user_mailboy_id }} !== '']
+          echo "TEST: [${{ inputs.user_mailboy_id }} !== '']
           echo "RESET_PENGURUS: [$RESET_PENGURUS]"
           echo "============================================================"
           echo
@@ -83,7 +85,7 @@ jobs:
       #     bundle exec cap $ENVIRONMENT replicate_production_to_uat
 
       - name: Reset Password User
-        if: ${{ inputs.user_mailboy_id }} != ''
+        if: inputs.user_mailboy_id != ''
         env:
           ENVIRONMENT: ${{ inputs.server }}
           RESET_USER: ${{ inputs.user_mailboy_id }}
@@ -92,7 +94,7 @@ jobs:
       #     bundle exec cap $ENVIRONMENT reset_passwords_for_users_uat user=$RESET_USER
 
       - name: Reset Password Pengurus
-        if: ${{ inputs.reset_pengurus }}
+        if: inputs.reset_pengurus
         env:
           ENVIRONMENT: ${{ inputs.server }}
         run: |
