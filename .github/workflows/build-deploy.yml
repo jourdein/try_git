@@ -20,6 +20,17 @@ on:
         required: false
         type: string
 jobs:
+  validate-tag:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check workflow tag
+      if: ${{ !contains(github.ref, 'refs/tags') && inputs.server == 'staging' }}
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed('Publish to staging should only be run on a tag! Invalid tag ${{ github.ref }}.')
+
   deploy:
     name: Deploy to ${{ inputs.server }}
     runs-on: ubuntu-latest
